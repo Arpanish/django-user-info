@@ -1,0 +1,38 @@
+# Django
+*.log
+*.pot
+*.pyc
+*.db
+*.pid
+__pycache__/
+local_settings.py
+db.sqlite3
+media
+inventory/static/
+inventory/inventory/settings/prod.py
+
+
+
+static_cdn/
+media_cdn/
+media/
+# static/
+
+*.py[cod]
+*$py.class
+
+*.sage.py
+
+# Environments
+.env 
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+**/venv
+# vscode
+.vscode/
+.idea/
+

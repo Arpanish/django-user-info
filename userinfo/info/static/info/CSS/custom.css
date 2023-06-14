@@ -1,0 +1,23 @@
+/* your styles go here */
+*{
+    font-family: 'Poppins', sans-serif;
+
+}
+
+.dropdown-toggle::after {
+   margin-top: -20;
+   content: "";
+}
+
+.sidebar-link:hover {
+    text-decoration: none;
+  }
+
+.ft:hover{
+    text-decoration: none;
+
+}
+
+.adduser:hover{
+    text-decoration: none;
+}

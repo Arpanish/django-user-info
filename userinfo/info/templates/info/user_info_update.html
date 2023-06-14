@@ -1,0 +1,169 @@
+{% extends 'info/base.html' %}
+{% load static %}
+{% block title%}
+Dashboard
+{% endblock title%}
+{% block content %} 
+    <div class="page">
+
+      <div class="page-content d-flex align-items-stretch"> 
+        <!-- Side Navbar -->
+        <nav class="side-navbar z-index-40">
+          <!-- Sidebar Header-->
+          <div class="sidebar-header d-flex align-items-center py-4 px-3"><img class="avatar shadow-0 img-fluid rounded-circle" src="{% static 'info/images/treeleaf.jpg' %}" alt="...">
+            <div class="ms-3 title">
+              <center><h1 class="h4 mb-2" style="font-size:large;">Treeleaf Technology</h1></center>
+              <center> <p class="text-sm text-gray-500 fw-light mb-0 lh-1">IT Company</p></center>
+            </div>
+          </div>
+          {% comment %} <!-- Sidebar Navidation Menus--><span class="text-uppercase text-gray-400 text-xs letter-spacing-0 mx-3 px-2 heading">Main</span> {% endcomment %}
+          <ul class="list-unstyled py-4">
+            <li class="sidebar-item"><a class="sidebar-link" href="{% url 'dashboard'%}"> 
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                  <use xlink:href="#real-estate-1"> </use>
+                </svg>Home </a></li>
+
+
+                <li class="sidebar-link" href="#exampledropdownDropdown" data-bs-toggle="collapse">
+                  <a onclick="userclick()" class="sidebar-item" style="cursor:pointer;">
+                  <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                    <use xlink:href="#portfolio-grid-1"></use>
+                  </svg>User</a></li>
+                  <ul class="collapse list-unstyled" id="exampledropdownDropdown">
+                    <li style="padding-left:50px;background: #EEF5F9;"><a class="sidebar-link" href="{% url 'signupdashboard' %}">Add User</a></li>
+              <li style="padding-left:50px;background: #EEF5F9;"><a class="sidebar-link" href="{% url 'usertable' %}">User</a></li>
+
+                  </ul>
+                </li> 
+
+                 {% comment %} user docs {% endcomment %}
+          <li class="sidebar-item"><a class="sidebar-link" href="{% url 'userdocs' %}"> 
+            <span class="material-symbols-outlined">
+              description
+              </span>User Docs</a>
+          </li>
+
+            
+                
+                {% if request.user.is_active%}
+                <li class="sidebar-item"><a class="sidebar-link" href="{% url 'userlogout' %}"> 
+                    <span class="material-symbols-outlined">
+                      logout
+                      </span> {{request.user.username}}</a>
+                  </li>
+                  {% endif %}
+           
+          </ul>
+         
+        </nav>
+        <div class="content-inner w-100">
+          <!-- Page Header-->
+         <header class="bg-white shadow-sm px-4 py-3 z-index-20">
+             <div class="container-fluid px-0">
+              <h2 class="mb-0 p-1">User Information Update</h2>
+            </div>
+          </header> 
+          <!-- Breadcrumb-->
+          <div class="bg-white">
+            <div class="container-fluid">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 py-3" style="background-color:white;">
+                  <li class="breadcrumb-item"><a class="fw-light ft" href="{% url 'usertable'%}">User</a></li>
+                  <li class="breadcrumb-item active fw-light" aria-current="page">User Information Update</li> 
+                </ol>
+               </nav>
+            </div>
+          </div>
+          <section class="tables">   
+            <div class="container-fluid">
+              <div class="row gy-4">
+                <div class="col-">
+                  <div class="card mb-0">
+                    {% comment %} <div class="card-header">
+                      
+                      <h3 class="h4 mb-0" style="font-size:larger;">User Information Update</h3>
+                    </div> {% endcomment %}
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <form method = "POST">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label">**Username</label>
+                                {{form.username}}<span style="color:red;font-size:10px;"> {{form.username.errors|striptags}}</span>
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">**Fullname</label>
+                                {{form.full_name}}<span style="color:red;font-size:10px;"> {{form.full_name.errors|striptags}}</span>
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Address</label>
+                                {{form.address}}<span style="color:red;font-size:10px;"> {{form.address.errors|striptags}}</span>
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">**Email</label>
+                                {{form.email}}<span style="color:red;font-size:10px;"> {{form.email.errors|striptags}}</span>
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Phone Number</label>
+                                {{form.phone_number}} <span style="color:red;font-size:10px;"> {{form.phone_number.errors|striptags}}</span>
+                              </div>
+                              <div class="mb-3">
+                                {{form.is_staff}}<span style="color:red;font-size:10px;"> {{form.is_staff.errors|striptags}}</span>
+                                <label class="form-label">is staff</label>
+                              </div>
+                              <div class="mb-3">
+                                {{form.is_superuser}} <span style="color:red;font-size:10px;">{{form.is_superusererrors|striptags}}</span>
+                                <label class="form-label">is superuser</label>
+                              </div>
+                              
+                           
+                            <button class="btn btn-primary" type="submit">Update</button>
+                          </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+    <!-- JavaScript files-->
+    <script src="static/info/JS/bootstrap.bundle.min.js"></script>
+    <script src="static/info/JS/Chart.min.js"></script>
+    <script src="static/info/JS/just-validate.min.js"></script>
+    <script src="static/info/JS/choices.min.js"></script>
+    <!-- Main File-->
+    <script src="static/info/JS/front.js"></script>
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }
+      // this is set to BootstrapTemple website as you cannot 
+      // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
+      // while using file:// protocol
+      // pls don't forget to change to your domain :)
+      injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg'); 
+
+
+      function userclick(){
+        console.log("dghhhhhhhhhhhhhh");
+          var link = "http://127.0.0.1:8000/usertable/";
+          window.location.href = link;
+      } 
+  
+      
+      
+    </script>
+    <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+{% endblock content%}

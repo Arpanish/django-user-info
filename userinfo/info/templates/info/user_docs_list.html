@@ -1,0 +1,161 @@
+{% extends 'info/base.html' %}
+{% load static %}
+{% block title%}
+Dashboard
+{% endblock title%}
+{% block content %} 
+    <div class="page">
+
+      <div class="page-content d-flex align-items-stretch"> 
+        <!-- Side Navbar -->
+        <nav class="side-navbar z-index-40">
+          <!-- Sidebar Header-->
+          <div class="sidebar-header d-flex align-items-center py-4 px-3"><img class="avatar shadow-0 img-fluid rounded-circle" src="{% static 'info/images/treeleaf.jpg' %}" alt="...">
+            {% comment %} <div class="ms-3 title">
+              <center><h1 class="h4 mb-2" style="font-size:large;">Treeleaf Technology</h1></center>
+              <center> <p class="text-sm text-gray-500 fw-light mb-0 lh-1">IT Company</p></center>
+            </div> {% endcomment %}
+          </div>
+          {% comment %} <!-- Sidebar Navidation Menus--><span class="text-uppercase text-gray-400 text-xs letter-spacing-0 mx-3 px-2 heading">Main</span> {% endcomment %}
+          <ul class="list-unstyled py-4">
+            <li class="sidebar-item"><a class="sidebar-link" href="{% url 'dashboard'%}"> 
+                <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                  <use xlink:href="#real-estate-1"> </use>
+                </svg>Home </a></li>
+
+                
+                  <li class="sidebar-link active" href="#exampledropdownDropdown" data-bs-toggle="collapse">
+                    <a href="{% url 'usertable'%}" class="sidebar-item" style="cursor:pointer;">
+                    <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
+                      <use xlink:href="#portfolio-grid-1"></use>
+                    </svg>User</a>
+                  </li>
+                    <ul class="collapse list-unstyled" id="exampledropdownDropdown">
+                      <li style="padding-left:50px;background: #EEF5F9;"><a class="sidebar-link" href="{% url 'signupdashboard' %}">Add User</a></li>
+              <li style="padding-left:50px;background: #EEF5F9;"><a class="sidebar-link" href="{% url 'usertable' %}">User</a></li>
+
+                    </ul>
+                  </li> 
+                   {% comment %} user docs {% endcomment %}
+          <li class="sidebar-item"><a class="sidebar-link" href="{% url 'userdocs' %}"> 
+            <span class="material-symbols-outlined">
+              description
+              </span>User Docs</a>
+          </li>
+{% comment %} logout {% endcomment %}
+                {% comment %} </li> {% endcomment %}
+                {% if request.user.is_active%}
+                <li class="sidebar-item"><a class="sidebar-link" href="{% url 'userlogout' %}"> 
+                    <span class="material-symbols-outlined">
+                      logout
+                      </span> {{request.user.username}}</a>
+                  </li>
+                  {% endif %}
+            
+          </ul>
+         
+        </nav>
+        <div class="content-inner w-100">
+          <!-- Page Header-->
+          <header class="bg-white shadow-sm px-4 py-3 z-index-20">
+            <div class="container-fluid px-0">
+              <h2 class="mb-0 p-1">Tables</h2>
+            </div>
+          </header>
+          <!-- Breadcrumb-->
+          <div class="bg-white">
+            <div class="container-fluid">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 py-3" style="background-color:white;">
+                  <li class="breadcrumb-item"><a class="fw-light ft" href="{% url 'dashboard'%}">Home</a></li>
+                  <li class="breadcrumb-item active fw-light" aria-current="page">User</li> 
+                </ol>
+               </nav>
+            </div>
+          </div>
+          <section class="tables">   
+            <div class="container-fluid">
+              <div class="row gy-4">
+                <div class="col-">
+                  <div class="card mb-0">
+                    <div class="card-header">
+                      <div class="card-close" style="position:absolute;top:5px;">
+                       
+
+                        <button class="btn btn-success"><a class="adduser" style="color:white;" href={% url 'userdocs_form' id %}> + Add docs</a></button>    
+                      </div>
+                      <h3 class="h4 mb-0" style="font-size:larger;">User Information</h3>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table mb-0">
+                          <thead>
+                            <tr>
+                              <th>Doc Type</th>
+                              <th>bbox</th>
+                              <th>Image URL</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for userdocs in userdocs%}
+                            <tr>
+                            {% comment %} {% for userdocs in userdocs%} {% endcomment %}
+                            <td>{{userdocs.doc_type}}</td>
+                              <td>{{userdocs.bbox}}</td>
+                              <td><img src={{userdocs.docs_image_url.url}} width=40 height=30></td>
+                              {% comment %} <td>{{userdocs.user_id}}</td>
+                              <td>{{userdocs.id}}</td> {% endcomment %}                             
+                            </tr>
+                            {% endfor %}
+
+                           
+                           
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+    <!-- JavaScript files-->
+    <script src="static/info/JS/bootstrap.bundle.min.js"></script>
+    <script src="static/info/JS/Chart.min.js"></script>
+    <script src="static/info/JS/just-validate.min.js"></script>
+    <script src="static/info/JS/choices.min.js"></script>
+    <!-- Main File-->
+    <script src="static/info/JS/front.js"></script>
+    <script>
+      // ------------------------------------------------------- //
+      //   Inject SVG Sprite - 
+      //   see more here 
+      //   https://css-tricks.com/ajaxing-svg-sprite/
+      // ------------------------------------------------------ //
+      function injectSvgSprite(path) {
+      
+          var ajax = new XMLHttpRequest();
+          ajax.open("GET", path, true);
+          ajax.send();
+          ajax.onload = function(e) {
+          var div = document.createElement("div");
+          div.className = 'd-none';
+          div.innerHTML = ajax.responseText;
+          document.body.insertBefore(div, document.body.childNodes[0]);
+          }
+      }
+      // this is set to BootstrapTemple website as you cannot 
+      // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
+      // while using file:// protocol
+      // pls don't forget to change to your domain :)
+      injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg'); 
+
+      function userclick(){
+          var link = "http://127.0.0.1:8000/usertable/";
+          window.location.href = link;
+      } 
+  
+      
+      
+    </script>
+    <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+{% endblock content%}

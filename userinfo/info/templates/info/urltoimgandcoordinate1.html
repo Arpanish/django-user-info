@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        @media only screen and (max-width: 600px){
+            .eg {
+                color:blue;
+                font-size:10px;
+            }
+        } 
+       #id{
+            width:50%;
+            background:blue;
+            margin-left:190px;
+        } 
+        
+        {% comment %} for tablet {% endcomment %}
+        {% comment %} @media only screen and (min-width: 600px) {
+            div.example {
+              display: none;
+            }
+          } {% endcomment %}
+          {% comment %} desktop {% endcomment %}
+        {% comment %} @media only screen and (min-width: 768px) {
+            div.example {
+                color:red;
+            }
+        } {% endcomment %}
+
+        {% comment %} For mobile phones:  {% endcomment %}
+        {% comment %} [class*="col-"] { {% endcomment %}
+       
+
+        
+      
+    </style>
+</head>
+<body>
+    <input type="text" id="coor">
+    <button onclick="myFunction()">Click me</button>
+	<div><input type="text" id="imageUrlInput" placeholder="Enter Image URL"></div>
+    <div id="id">
+	<canvas id="myCanvas"></canvas>
+    </div>
+    <br>
+	<script>
+		var canvas = document.getElementById("myCanvas");
+		var ctx = canvas.getContext("2d");
+		var image = new Image();
+        var isDrawing = false;
+		var startX, startY, endX, endY;
+		var imageUrlInput = document.getElementById("imageUrlInput");
+		imageUrlInput.addEventListener("input", function() {
+			var imageUrl = imageUrlInput.value;
+
+			image.onload = function() {
+                canvas.width = image.width;
+			    canvas.height = image.height;
+				
+				ctx.drawImage(image, 0, 0);
+			};
+			image.src = imageUrl;
+		});
+        function myFunction(){
+            function drawRect(x, y, width, height) {
+                ctx.beginPath();
+                ctx.rect(x, y, width, height);
+                ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+                ctx.stroke();
+                ctx.closePath();
+            }
+            canvas.addEventListener("mousedown", function(e) {
+                isDrawing = true;
+                rect = canvas.getBoundingClientRect();
+                startX = e.clientX - rect.left;
+                startY= e.clientY - rect.top;
+                console.log(e.clientX,rect.left,canvas.offsetLeft,e.clientX-rect.left);
+            });
+
+            canvas.addEventListener("mousemove", function(e) {
+                if (isDrawing) {
+                    endX = e.clientX - rect.left;
+                    endY = e.clientY - rect.top;
+                    endclient=e.clientX;
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(image, 0, 0);
+                    drawRect(startX, startY, endX - startX, endY - startY);
+                }
+            });
+
+            canvas.addEventListener("mouseup", function(e) {
+                isDrawing = false;
+                var rectX = Math.min(startX, endX);
+                var rectY = Math.min(startY, endY);
+                var rectWidth = Math.abs(endX - startX);
+                var rectHeight = Math.abs(endY - startY);
+                var rect = {
+                    x: rectX,
+                    y: rectY,
+                    width: rectWidth,
+                    height: rectHeight
+                };
+                b=[rectX,rectY,rectWidth,rectHeight];
+                a=document.getElementById('coor');
+                a.value=b;
+            });
+    }
+	</script>
+</body>
+</html>

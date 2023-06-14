@@ -1,0 +1,337 @@
+{% extends 'info/base.html' %}
+{% load static %}
+{% block content %} 
+<br><br>
+<form method="POST">
+    {% csrf_token %}
+    <div class="card" style='width:45%;margin-left:auto;margin-right:auto;'>
+        <center><h5 class="card-header">Take image for user profile</h5></center>
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <center><p class="card-text">Click the button below to click image</p></center><br>
+          {% comment %} <a href="#" class="btn btn-primary">Go somewhere</a> {% endcomment %}      
+    <div class="container-fluid">
+        <!-- Button trigger modal -->
+       <center> <button type="button"  onclick="eraseImg()"  class="btn btn-md btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+            Capture Image
+          </button></center>
+          <!-- Modal -->
+          
+          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="new">
+
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" style="text-align:center; margin-left:auto;"  id="exampleModalLongTitle">Capture Image</h5>
+                  <button type="button" onclick="vidOff()" class="close" data-dismiss="modal" aria-label="Close">
+                    <span  aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" style='width:500px;'>
+                   <div id='results'>
+                        <div>
+                          <video autoplay></video>
+                          <center><button id='getUserMediaButton' type="button" class="btn btn-primary" onclick="onGetUserMediaButtonClick()">Start Camera</button></center>
+                          <button type="button" id='takePhotoButton' onclick="onTakePhotoButtonClick()" class="btn btn-primary" style="display:none;margin-left:auto;margin-right:auto;" disabled>Take Photo</button>
+                        </div>
+                        <br>
+                        <div>
+                          <canvas id='takePhotoCanvas'></canvas>
+                        </div>
+                      </div>
+                      <div id="imgElement" style='margin-top: -350px;'><br><br>
+                     {% comment %} <button type="button"  class="btn btn-primary" data-dismiss="modal" onclick="cancel()">Cancel</button> {% endcomment %}
+                      </div>
+                <div class="modal-footer">
+                  <button type="button"  class="btn btn-primary" data-dismiss="modal" onclick="save()">OK</button>
+                  <button type="button"  class="btn btn-primary" data-dismiss="modal" onclick="cancel()">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+                </div>
+            </div>
+            <div class="col-md-6 offset-md-3">
+                <br>
+            <div style="display:none;border:0px;" id="imageName" class="imageNameClass"></div>
+            <div style="border:0px;display:none;" id="base64name"></div>
+            <input style="border:0px;display:none;" id="totalimage" name="totalimage">
+            <input style="border:0px;" id="totalimages" name="totalimages">
+            {% comment %} <input style="border:0px; display:none;" id="totalimage" name="totalimage"> {% endcomment %}
+        </div>
+            {% comment %} <br><br> {% endcomment %}
+        </div>
+      </div>
+    </div>
+      <br>
+<button type="submit" class="btn btn-primary" style = "margin-left:69%;" onclick="total_num_img()"><a style="color:white;text-decoration:none;" href="{% url 'dashboard'%}">Add</a></button>
+
+      {% comment %} <center><button type="submit" class="btn btn-primary">Add</button></center> {% endcomment %}
+</form>
+{% comment %} <center><button type="submit" class="btn btn-primary" onclick="total_num_img()">Adds</button></center> {% endcomment %}
+
+{% endblock content%}
+
+{% block javascript %}
+<script>
+{% comment %} js for webcam capture multiple image {% endcomment %}
+function onGetUserMediaButtonClick() {
+    navigator.mediaDevices.getUserMedia({video: true})
+    .then(mediaStream => {
+        document.querySelector('video').srcObject = mediaStream;
+        const track = mediaStream.getVideoTracks()[0];
+        imageCapture = new ImageCapture(track);
+        document.getElementById("getUserMediaButton").style.display = "none";
+        document.getElementById("takePhotoButton").style.display = "block";
+    })
+    .catch(error => ChromeSamples.log(error)); 
+    } 
+
+    {% comment %} {% comment %} $('#exampleModalCenter').on('hide.bs.modal', function (e) {
+        Webcam.reset();
+    }); {% endcomment %}
+
+        function onTakePhotoButtonClick() {
+            var blob = imageCapture.takePhoto()
+            .then(blob =>  createImageBitmap(blob)) 
+            .then(imageBitmap => {
+              const canvas = document.querySelector('#takePhotoCanvas');
+              drawCanvas(canvas, imageBitmap);
+              console.log(imageBitmap);       
+              console.log(canvas);
+            })
+            .catch(error => ChromeSamples.log(error));  
+            }  
+        
+
+        function drawCanvas(canvas, img) {
+          var counter =  document.getElementById('imgElement').childElementCount;
+          console.log(counter);
+
+          canvas.width = getComputedStyle(canvas).width.split('px')[0];
+          canvas.height = getComputedStyle(canvas).height.split('px')[0];
+          let ratio  = Math.min(canvas.width / img.width, canvas.height / img.height);
+          let x = (canvas.width - img.width * ratio) / 2;
+          let y = (canvas.height - img.height * ratio) / 2;
+          canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+          canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height,
+              x, y, img.width * ratio, img.height * ratio);    
+          var imagetobase64 = canvas.toDataURL();
+          console.log(imagetobase64);
+
+
+
+          var imgElem = new Image()
+          imgElem.src = imagetobase64;
+          {% comment %} imgElem.width = 130;  {% endcomment %}
+          imgElem.classList.add('commonclass');
+
+          
+          imgElem.id="commonid" 
+
+
+
+         
+
+
+
+          // Set a name for the image
+          const date = new Date();
+          imgElem.name = "image_" + date.getTime();
+          <!-- imgElem.setAttribute('src',imagetobase64); -->
+
+
+          const handleRemove = e => {
+            const item = e.target.closest('.item');
+            item.querySelector('.remove-sign')
+            .removeEventListener('click', handleRemove);
+            item.parentElement.removeChild(item);
+          };
+
+{% comment %} cross sign image {% endcomment %}
+          var cross = new Image();
+          cross.width=15;
+          cross.height=15;
+
+          {% comment %} cross.classList.add('cross-sign'); {% endcomment %}
+
+
+          imgsrc='https://thumbs.dreamstime.com/b/x-red-mark-cross-sign-graphic-symbol-crossed-brush-strokes-red-mark-cross-sign-graphic-symbol-154904211.jpg';
+          cross.setAttribute('src',imgsrc);
+          imgElem.append(cross);
+
+
+{% comment %} image appending to item div which is inside imgElement div {% endcomment %}
+          const item = document.createElement('div');
+          item.classList.add('item');
+          cross.classList.add('remove-sign');
+          
+          cross.addEventListener('click', handleRemove); 
+          item.append(imgElem);
+          item.append(cross);
+           document.getElementById('imgElement').appendChild(item);
+{% comment %} here i am {% endcomment %}
+        }
+        document.querySelector('video').addEventListener('play', function() {
+          document.querySelector('#takePhotoButton').disabled = false;
+        });
+
+
+
+
+        {% comment %}function of save button {% endcomment %}
+
+        function save() {
+            var counter =  document.getElementById('imgElement').childElementCount;
+            document.getElementById('totalimage').value = counter;
+            console.log("counter");
+            console.log(counter);
+            console.log("counter");
+
+        const canvas = document.querySelector('#takePhotoCanvas');
+        var imagetobase64 = canvas.toDataURL();
+
+
+        {% comment %} i am hereeeeeeeeeeeeee {% endcomment %}
+
+
+        const imgElements = document.getElementsByClassName("commonclass");
+        const imgCount = imgElements.length;
+        console.log(imgCount);
+        const imageName = document.getElementById("imageName");
+        for (let i = 0; i < imgCount; i++) {
+            var x = document.createElement("input");
+            x.setAttribute("id",i);
+            x.setAttribute("name",i);
+            x.setAttribute("value", imagetobase64);
+            document.getElementById('base64name').appendChild(x); 
+            var imgElem = new Image()
+            imgElem.src = imgElements[i].src;
+            imgElem.classList.add('img_eleclass');
+            imgElem.name ='name';
+            {% comment %} imgElem.width=130; {% endcomment %}
+            {% comment %} document.getElementById('imageName').appendChild(imgElem); {% endcomment %}
+
+
+
+
+
+
+
+            const Removebuttondisplay = e => {
+            const item_front = e.target.closest('.item_front');
+            item_front.querySelector('.display_cross')
+            .removeEventListener('click', Removebuttondisplay);
+            item_front.parentElement.removeChild(item_front);
+          };
+
+
+{% comment %} div for front cross sign {% endcomment %}
+        {% comment %} const imgElements = document.getElementsByTagName("img"); {% endcomment %}
+        const imgElement = document.getElementsByClassName("remove-sign");
+        const imgCounts = imgElement.length;
+        console.log('length of cross sign');
+        console.log(imgCounts);
+
+        var cross = new Image();
+        const items = document.createElement('div');
+        items.classList.add('item_front');
+        cross.width=15;
+        cross.height=15;
+        cross.classList.add('display_cross');
+        imgsrc='https://thumbs.dreamstime.com/b/x-red-mark-cross-sign-graphic-symbol-crossed-brush-strokes-red-mark-cross-sign-graphic-symbol-154904211.jpg';
+        cross.setAttribute('src',imgsrc);
+        cross.addEventListener('click', Removebuttondisplay); 
+        items.append(imgElem);
+        items.append(cross);
+        document.getElementById('imageName').appendChild(items);
+    }
+
+
+
+
+
+        {% comment %} this will stop camera after clicking ok button {% endcomment %}
+        document.querySelector('video').srcObject.getTracks().forEach(track => track.stop());
+        document.getElementById("getUserMediaButton").style.display = "block";
+        document.getElementById("takePhotoButton").style.display = "none";
+        document.getElementById("imageName").style.display='inline-block';
+       
+
+
+{% comment %} it will stop camera after image capture and save button is clicked {% endcomment %}
+            {% comment %} const video = document.querySelector('video');
+            const mediaStream = video.srcObject;
+            const tracks = mediaStream.getTracks(); 
+            tracks[0].stop(); {% endcomment %}
+        }
+
+        {% comment %} for x of modal to stop camera {% endcomment %}
+        function vidOff() {
+            const video = document.querySelector('video');
+
+            // A video's MediaStream object is available through its srcObject attribute
+            const mediaStream = video.srcObject;
+
+            // Through the MediaStream, you can get the MediaStreamTracks with getTracks():
+            const tracks = mediaStream.getTracks();
+
+            // Tracks are returned as an array, so if you know you only have one, you can stop it with: 
+            tracks[0].stop();
+
+        };
+
+
+
+
+
+
+{% comment %} to erase previously capture image from webcam {% endcomment %}
+          function eraseImg(){
+            {% comment %} var images_main = document.getElementsByClassName('img_eleclass');
+            var img_main_length = images_main.length;
+            console.log(img_main_length); {% endcomment %}
+
+
+            var images = document.getElementsByClassName('item');
+            var base64_storage = document.getElementById('base64name');
+            var img_length = images.length;
+            console.log(img_length);
+            for (var i = 0; i < img_length; i++) {
+                images[0].parentNode.removeChild(images[0]);
+            }   
+
+
+            {% comment %} for (var j = 0; j < img_main_length; j++) {
+                images_main[0].remove(images_main[0]);
+            } 
+             {% endcomment %}
+            
+          }
+
+          function cancel(){
+            document.querySelector('video').srcObject.getTracks().forEach(track => track.stop());
+            document.getElementById("getUserMediaButton").style.display = "block";
+            document.getElementById("takePhotoButton").style.display = "none";
+            document.getElementById("imageName").style.display='block';
+          }
+         
+
+
+          function total_num_img(){
+            var counter =  document.getElementById('imageName').childElementCount;
+            document.getElementById('totalimage').value = counter;
+            console.log("counter");
+            console.log(counter);
+            console.log("counter");
+
+            
+          }
+
+        </script>
+{% endblock javascript%}
+
+

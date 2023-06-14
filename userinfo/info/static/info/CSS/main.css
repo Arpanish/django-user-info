@@ -1,0 +1,298 @@
+
+.user_profile{
+    border:1px solid white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    
+}
+.user{
+    color:black;
+}
+.adduser{
+    color:white;
+    text-decoration: none;
+}
+.adduser:hover{
+    color:white;
+    text-decoration: none;
+   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* web cam capture */
+.aunderline{
+    color:rgb(243, 239, 239);
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: none;
+}
+
+.createcomputerinfo{
+    font-size: larger;
+    font-weight: bolder;
+    margin-left: 5%; 
+}
+.computername{
+    text-decoration: none; 
+    color:black;
+}
+table {
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto; 
+ }
+th,td{
+    padding-left: 10px;
+    
+}
+.submain{
+    width:20%;
+    padding: 20px;
+    margin-top: 4%;
+    margin-left: auto;
+    margin-right: auto;
+} 
+.submain{
+    text-align:left;
+    margin-top: 5%;
+    padding-left: 17%;
+}
+.detail{
+    margin-top: 15px;
+    padding: 2px;
+}
+
+.text{
+    font-weight:500;
+    font-size: large;
+}
+.allcomputers{
+    font-size: large;
+    font-weight: 500;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+h1{
+    text-align: center;
+}
+a{
+    color:white;
+    text-decoration: none;
+}
+a:hover{
+    color:white;
+}
+.loginimg{
+    margin-top: 15%;
+}
+.text{
+    padding-top: 2%;
+}
+.end{
+    padding:7%;
+}
+.textt{
+    text-align: center;
+    padding:22%;
+    background-color: #498af8;
+}
+h2{
+    color:white;
+   
+}
+.navele{
+    font-weight:500;
+    background-color: aquamarine;
+}
+.user{
+    font-weight: 500;
+}
+.aunderline{
+    text-decoration: none;
+}
+.user_registration_form{
+    color:rgb(120, 117, 117);
+    font-size: large;
+}
+.register_button{
+    font-size: large;
+}
+.formheight{
+    height:40px;
+}
+
+.dropdown-toggle::after {
+    border-top: none; 
+}
+
+.navbar-expand-lg .navbar-nav .dropdown-menu {
+    position: unset;
+}
+
+
+.btn {
+    display: inline;
+}
+
+
+.dropdown-menu.show {
+    display: block;
+    position: absolute;
+    right: 0px;
+}
+.common_profile{
+    border-radius: 50%;
+}
+.dropdown-menu {
+  left:auto;
+  right:auto;
+}
+
+.nav_pp{
+list-style-type:none;
+}
+.divclass{
+width:95%;
+margin-left:auto;
+margin-right:auto;
+}
+.cgd{
+    border-radius: 50%;
+}
+/* .dropdown-toggle::after {
+   visibility: hidden;
+  } */
+
+
+
+
+  /* webcam */
+  #results > div {
+    /* width: 33%; */
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    line-height: 24px;
+  }
+  
+  @media (max-width: 814px) {
+  
+    #results {
+      flex-flow: column;
+    }
+    
+    #results > div {
+      width: 100%;
+      margin-bottom: 24px;
+    }
+  
+  }
+  
+  video,canvas{
+    object-fit: contain;
+    border: 2px solid rgba(255, 255, 255, 1);
+    background: black;
+    width:550px;
+    height:400px;
+    /* max-width: 60% ;
+    height: auto; */
+   
+    
+  } 
+/* 
+  canvas {
+    object-fit: contain;
+    border: 2px solid rgba(255, 255, 255, 1);
+  } 
+   */
+
+
+
+
+ canvas#takePhotoCanvas {
+    visibility: hidden;
+    margin-top: -370px;
+}
+
+/* cross sign image */
+.remove-sign{
+    /* position: relative;
+    right: 13px;
+    top: -35px; */
+    position: relative;
+    right: 10px;
+    top: -45px;
+
+}
+
+
+.item {
+    display: inline;
+    padding-left: 1.6px
+}
+
+
+
+
+/* card */
+
+
+
+img.display_cross {
+    margin-top: -205px;
+    margin-left: 90px;
+    /* margin-top: -207px;
+    margin-left: 90px; */
+}
+
+.commonclass{
+    width: 115px;
+    padding-bottom: 15px;
+}
+.item_front {
+        /* display: inline-block;
+        width: 100px;
+        margin-left: 17px; */
+        display: inline-block;
+        width: 120px;
+        margin-left: 17px;
+}
+.img_eleclass {
+    /* width: 110px;
+    margin-left: 15px; */
+    width: 130px;
+    margin-left: -27px;
+}
+.imageNameClass{
+    width: 550px;
+    border: 0px;
+    margin-left: -150px;
+    display: inline-block;
+    text-align: center;
+}
+#imgElement {
+    margin-left: 7px;
+}

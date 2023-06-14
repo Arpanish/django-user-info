@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+
+
+    </head>
+    <body>
+        <canvas id="myCanvas" width="400" height="400"></canvas>
+<script>
+    var canvas = document.getElementById('myCanvas');
+    var ctx = canvas.getContext('2d');
+    
+    // Load the PDF document
+    pdfjsLib.getDocument('https://www.africau.edu/images/default/sample.pdf').promise.then(function (pdf) {
+      // Fetch the total number of pages in the PDF
+      var numPages = pdf.numPages;
+      console.log(numPages);
+    
+      // Set the current page to display
+      var pageNumber = 1;
+    
+      // Function to render the current page onto the canvas
+      function renderPage() {
+        // Fetch the specified page
+        pdf.getPage(pageNumber).then(function (page) {
+          var viewport = page.getViewport({ scale: 1 });
+    
+          // Set the canvas dimensions to match the PDF page
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+    
+          // Render the PDF page to a canvas
+          var renderContext = {
+            canvasContext: ctx,
+            viewport: viewport,
+          };
+          page.render(renderContext).promise.then(function () {
+            console.log('PDF page rendered on canvas.');
+          });
+        });
+      }
+    
+      // Call the renderPage function to display the first page initially
+      renderPage();
+    
+      // Function to go to the next page
+      function nextPage() {
+        if (pageNumber < numPages) {
+          pageNumber++;
+          renderPage();
+        }
+      }
+    
+      // Function to go to the previous page
+      function previousPage() {
+        if (pageNumber > 1) {
+          pageNumber--;
+          renderPage();
+        }
+      }
+    
+      // Add event listeners for next and previous page buttons
+      document.getElementById('nextPageBtn').addEventListener('click', nextPage);
+      document.getElementById('previousPageBtn').addEventListener('click', previousPage);
+    });
+    
+</script>
+    </body>
+    </html>

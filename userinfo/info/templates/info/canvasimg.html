@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Canvas Image and Rectangle</title>
+</head>
+<body>
+	<img id="myImage" src="https://s16458.pcdn.co/wp-content/uploads/images/u6/pdfgeneratorsdk_js_pdf_image_from_canvas.png" >
+	<canvas id="myCanvas" width="400" height="400"></canvas>
+
+	<script>
+		var canvas = document.getElementById("myCanvas");
+		var ctx = canvas.getContext("2d");
+
+		var isDrawing = false;
+		var startX, startY, endX, endY;
+
+		var image = document.getElementById("myImage");
+		image.onload = function() {
+			canvas.width = image.width;
+			canvas.height = image.height;
+			ctx.drawImage(image, 10, 40);
+		};
+
+		function drawRect(x, y, width, height) {
+			ctx.beginPath();
+			ctx.rect(x, y, width, height);
+			ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+			ctx.stroke();
+			ctx.closePath();
+		}
+
+		canvas.addEventListener("mousedown", function(e) {
+			isDrawing = true;
+			startX = e.clientX - canvas.offsetLeft;
+			startY = e.clientY - canvas.offsetTop;
+		});
+
+		canvas.addEventListener("mousemove", function(e) {
+			if (isDrawing) {
+				endX = e.clientX - canvas.offsetLeft;
+				endY = e.clientY - canvas .offsetTop;
+
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.drawImage(image, 0, 0);
+				drawRect(startX, startY, endX - startX, endY - startY);
+			}
+		});
+
+		canvas.addEventListener("mouseup", function(e) {
+			isDrawing = false;
+			var rectX = Math.min(startX, endX);
+			var rectY = Math.min(startY, endY);
+			var rectWidth = Math.abs(endX - startX);
+			var rectHeight = Math.abs(endY - startY);
+
+			var rect = {
+				x: rectX,
+				y: rectY,
+				width: rectWidth,
+				height: rectHeight
+			};
+
+			console.log(rect);
+		});
+	</script>
+</body>
+</html>
